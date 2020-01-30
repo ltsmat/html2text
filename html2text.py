@@ -496,7 +496,14 @@ class HTML2Text(HTMLParser.HTMLParser):
         if tag == "img" and start and not self.ignore_images:
             if has_key(attrs, 'src'):
                 attrs['href'] = attrs['src']
+            elif has_key(attrs, 'data-src'): 
+                attrs['href'] = attrs['data-src']
+            elif has_key(attrs, 'data-croporisrc'): 
+                attrs['href'] = attrs['data-croporisrc']
+
+            if has_key(attrs, 'href'):
                 alt = attrs.get('alt', '')
+                if(len(alt) == 0): alt=attrs.get("href")
                 self.o("![" + escape_md(alt) + "]")
 
                 if self.inline_links:
@@ -912,3 +919,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
